@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Excluir Livro</title>
+</head>
+<body>
+    <h1>Tem certeza que deseja excluir este livro?</h1>
+    <p><strong>{{ livro.titulo }}</strong> - {{ livro.autor }} ({{ livro.ano_publicacao }})</p>
+    <form method="POST">
+        {% csrf_token %}
+        <button type="submit">Sim, Excluir</button>
+    </form>
+    <a href="{% url 'listar_livros' %}">Voltar para a lista de livros</a>
+</body>
+</html>

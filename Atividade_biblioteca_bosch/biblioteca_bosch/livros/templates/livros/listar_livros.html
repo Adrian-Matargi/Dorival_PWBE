@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lista de Livros</title>
+</head>
+<body>
+    <h1>Lista de Livros</h1>
+    <a href="{% url 'cadastrar_livro' %}">Cadastrar Novo Livro</a>
+    <ul>
+        {% for livro in livros %}
+            <li>
+                <strong>{{ livro.titulo }}</strong> - {{ livro.autor }} ({{ livro.ano_publicacao }})
+                <a href="{% url 'atualizar_livro' livro.pk %}">Editar</a>
+                <a href="{% url 'excluir_livro' livro.pk %}">Excluir</a>
+            </li>
+        {% empty %}
+            <li>Nenhum livro cadastrado.</li>
+        {% endfor %}
+    </ul>
+</body>
+</html>
