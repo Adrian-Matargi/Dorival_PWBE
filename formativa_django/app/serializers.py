@@ -20,7 +20,31 @@ class SalaSerializer(serializers.ModelSerializer):
 class ReservaAmbienteSerializer(serializers.ModelSerializer):
     class Meta:
         model = ReservaAmbiente
-        Fields = '__all__'
+        fields = '__all__'
+    
+    def validate(self, data):
+        sala_reservada = data.get('sala_reservada')
+        professor = data.get('professor')
+        data_inicio = data.get('data_inicio')
+        data_termino = data.get('data_termino')
+        periodo = data.get('periodo')
+
+        reservas_conflito = ReservaAmbiente.objects.filter(
+            sala_reservada=sala_reservada,
+            periodo=periodo,
+            professor=professor
+        ).filter(
+            data_inicio__lt=data_termino,
+            data_termino__gt=data_inicio
+        )
+
+        if reservas_conflito.exists():
+            raise serializers.ValidationError("Já existe uma reserva conflitante para este professor nesta sala e período.")
+
+        if data_termino <= data_inicio:
+            raise serializers.ValidationError("A data de término deve ser posterior à de início.")
+        
+        return data
 
 class UsuarioSerializer(serializers.ModelSerializer):
     class Meta:
